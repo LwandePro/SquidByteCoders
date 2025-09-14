@@ -9,20 +9,26 @@
 // TODO: Fill-in the name of your team.
 ```
 
-## 👥 Members
-| Name     | Role                | Institution           | Discord Handle | Email |
-|----------|---------------------|-----------------------| -------------------|-------------|
-| **Name 1**   | Backend Developer   | University of Cape Town | name1 | <email1@gmail.com> |
-| **Name 2**   | Frontend Developer  | University of the Witwatersrand | name2 | <email2@gmail.com> |
-| **Name 3**   | Designer            | University of Johannesburg | name3 | <email3@gmail.com> |
-| **Name 4**   | Q.A Tester          | University of the Western Cape | name4 | <email4@gmail.com> |
+# Team Members
 
-## 🏫 Institution
-``` c
-// TODO: Fill-in the name of the institution your
-// team is competing under.
-```
+## SquidByteCoders From University of Johannesburg
 
-## 📧 Other Contact Info
-- GitHub Repo: <https://github.com/user-name/repo-name>
-- Other Info (if available): LinkedIn, Website, etc.
+### 1. Malwande Kunene
+- **Role**: Backend Developer & Team Lead
+- **Responsibilities**: Supabase integration, authentication, API routes, documentation
+- **Contact**: malwandekunene2@gmail.com
+
+### 2. Sphesihle Mnyamane 
+- **Role**: Frontend Developer
+- **Responsibilities**: UI/UX design, dashboard, charts, gamification layer
+- **Contact**:siphesihlemnyamana05@gmail.com
+
+### 3. Malwande kunrne
+- **Role**: AI/Chatbot Developer
+- **Responsibilities**: Chatbot interaction, personalized financial advice
+- **Contact**: malwandekunene2@gmail.com
+
+### 4. Dananai Mogezi
+- **Role**: QA & Presentation
+- **Responsibilities**: Testing, debugging, preparing presentation & video demo
+- **Contact**: danimagz05@gmail.com

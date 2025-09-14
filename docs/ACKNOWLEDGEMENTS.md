@@ -30,3 +30,15 @@ This document lists all **third-party repositories, modules, libraries, framewor
 | Name          | Source                              | Usage                             |
 |---------------|-------------------------------------|-----------------------------------|
 | MNIST         | http://yann.lecun.com/exdb/mnist/   | Training/testing machine learning |
+   # Acknowledgements
+
+We would like to acknowledge the following libraries, frameworks, and tools used in building this project:
+
+- [Node.js](https://nodejs.org/) – Backend runtime environment.
+- [Express.js](https://expressjs.com/) – Web framework for building the server and API routes.
+- [Supabase](https://supabase.com/) – Database, authentication, and storage solution.
+- [Chart.js](https://www.chartjs.org/) – For rendering interactive financial charts.
+- [Multer](https://github.com/expressjs/multer) – Middleware for handling file uploads.
+- [bcrypt.js](https://github.com/dcodeIO/bcrypt.js) – For password hashing and security.
+- [dotenv](https://github.com/motdotla/dotenv) – Environment variable management.
+- [VS Code Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) – For local frontend testing.

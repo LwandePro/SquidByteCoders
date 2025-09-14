@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinTrack - Finance Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <style>
+    /* Global Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8fafc;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    /* Dashboard Layout */
+    .dashboard {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 20px 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .logo {
+      padding: 0 20px 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #22c55e;
+      border-bottom: 1px solid #334155;
+      margin-bottom: 20px;
+    }
+
+    .nav-menu {
+      list-style: none;
+    }
+
+    .nav-item {
+      margin: 5px 0;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 12px 20px;
+      color: #cbd5e1;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: #334155;
+      color: #22c55e;
+      border-right: 3px solid #22c55e;
+    }
+
+    .logout-btn {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: #dc2626;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #b91c1c;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 250px;
+      flex: 1;
+      padding: 20px;
+      background: #f8fafc;
+    }
+
+    /* Header */
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .greeting {
+      font-size: 28px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    /* Upload Section */
+    .upload-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .upload-section h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .upload-section p {
+      font-size: 18px;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .upload-btn, .sample-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 0 10px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .upload-btn:hover, .sample-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    /* Results Grid */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+      color: #1e293b;
+      margin-bottom: 20px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .card canvas {
+      max-height: 300px;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      margin: 20px 0;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      border-radius: 6px;
+      transition: width 0.5s ease;
+    }
+
+    .progress-text {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #64748b;
+    }
+
+    /* Chatbox */
+    .chatbox {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 350px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .chatbox-header {
+      background: #1e293b;
+      color: white;
+      padding: 15px;
+      font-weight: 600;
+    }
+
+    .chatbox-content {
+      padding: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .chat-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      resize: none;
+      font-family: inherit;
+    }
+
+    .chat-btn {
+      background: #22c55e;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .chat-btn:hover {
+      background: #16a34a;
+    }
+
+    .chat-history {
+      margin-bottom: 15px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .chat-message {
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .user-message {
+      background: #eff6ff;
+      color: #1e40af;
+      text-align: right;
+    }
+
+    .bot-message {
+      background: #f0fdf4;
+      color: #166534;
+    }
+
+    /* Utility Classes */
+    .hidden {
+      display: none !important;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .chatbox {
+        width: 90vw;
+        right: 5vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">💰 FinTrack</div>
+      <nav>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="#" class="nav-link active" data-page="dashboard">Dashboard</a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="advice">Insights & Advice</a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="goals">Goal Tracker</a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="history">History</a></li>
+        </ul>
+      </nav>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div class="greeting">Hi, John 👋</div>
+        <div class="date" id="currentDate"></div>
+      </header>
+
+      <!-- Upload Section -->
+      <section id="upload-section" class="upload-section">
+        <h1>Understand your money better in minutes</h1>
+        <p>Upload your payslip or bank statement to get personalized financial insights</p>
+        <input type="file" id="fileUpload" class="file-input" accept=".pdf,.csv,.xlsx">
+        <button class="upload-btn" onclick="document.getElementById('fileUpload').click()">
+          📁 Upload Document
+        </button>
+        <button class="sample-btn" onclick="useSampleData()">
+          ✨ Try with Sample Data
+        </button>
+      </section>
+
+      <!-- Results Section -->
+      <section id="results-section" class="results-grid hidden">
+        <div class="card">
+          <h3>💰 Salary Breakdown</h3>
+          <canvas id="salaryChart"></canvas>
+        </div>
+        
+        <div class="card">
+          <h3>📊 Expenses Analysis</h3>
+          <canvas id="expenseChart"></canvas>
+        </div>
+        
+        <div class="card">
+          <h3>📈 Cash Flow Trend</h3>
+          <canvas id="cashflowChart"></canvas>
+        </div>
+        
+        <div class="card">
+          <h3>💳 Debt Overview</h3>
+          <canvas id="debtChart"></canvas>
+        </div>
+        
+        <div class="card">
+          <h3>🎯 Savings Goal Progress</h3>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" id="goalProgress" style="width: 20%"></div>
+            </div>
+            <p class="progress-text">R2,000 saved out of R10,000 target (20%)</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- AI Chatbox -->
+    <div class="chatbox">
+      <div class="chatbox-header">
+        💬 Financial Assistant
+      </div>
+      <div class="chatbox-content">
+        <div class="chat-history" id="chatHistory"></div>
+        <textarea 
+          class="chat-input" 
+          id="chatInput" 
+          placeholder="Ask me anything about your finances..."
+          rows="3"
+        ></textarea>
+        <button class="chat-btn" onclick="sendMessage()">Send Message</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global variables
+    let currentUser = { name: 'John' };
+    let financialData = null;
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+      updateDate();
+      setupNavigation();
+      setupFileUpload();
+    });
+
+    // Update current date
+    function updateDate() {
+      const now = new Date();
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      };
+      document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+    }
+
+    // Setup navigation
+    function setupNavigation() {
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Update active state
+          navLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Handle navigation (placeholder for now)
+          const page = this.dataset.page;
+          console.log(`Navigating to ${page}`);
+        });
+      });
+    }
+
+    // Setup file upload
+    function setupFileUpload() {
+      const fileInput = document.getElementById('fileUpload');
+      fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          uploadFile(file);
+        }
+      });
+    }
+
+    // Upload file function
+    function uploadFile(file) {
+      // Show loading state
+      const uploadSection = document.getElementById('upload-section');
+      uploadSection.innerHTML = `
+        <h1>Processing your file...</h1>
+        <p>Please wait while we analyze your financial data</p>
+        <div style="margin: 20px 0;">
+          <div style="width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+        </div>
+      `;
+      
+      // Add CSS for spinner
+      const style = document.createElement('style');
+      style.textContent = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+      document.head.appendChild(style);
+
+      // Simulate file processing
+      setTimeout(() => {
+        processFinancialData();
+      }, 2000);
+    }
+
+    // Use sample data
+    function useSampleData() {
+      uploadFile({ name: 'sample-data.csv' });
+    }
+
+    // Process financial data and show results
+    function processFinancialData() {
+      // Hide upload section and show results
+      document.getElementById('upload-section').classList.add('hidden');
+      document.getElementById('results-section').classList.remove('hidden');
+      
+      // Generate charts
+      renderCharts();
+      
+      // Add initial chat message
+      addChatMessage('bot', 'Welcome! I\'ve analyzed your financial data. Feel free to ask me any questions about your finances.');
+    }
+
+    // Render all charts
+    function renderCharts() {
+      renderSalaryChart();
+      renderExpenseChart();
+      renderCashflowChart();
+      renderDebtChart();
+    }
+
+    // Render salary breakdown chart
+    function renderSalaryChart() {
+      const ctx = document.getElementById('salaryChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Net Salary', 'Tax', 'UIF', 'Pension'],
+          datasets: [{
+            data: [25000, 8500, 200, 1800],
+            backgroundColor: ['#22c55e', '#ef4444', '#f59e0b', '#3b82f6'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                usePointStyle: true
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Render expense analysis chart
+    function renderExpenseChart() {
+      const ctx = document.getElementById('expenseChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Housing', 'Food', 'Transport', 'Entertainment', 'Savings', 'Other'],
+          datasets: [{
+            label: 'Amount (R)',
+            data: [12000, 4500, 3000, 2500, 2000, 1000],
+            backgroundColor: ['#3b82f6', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#6b7280'],
+            borderRadius: 8,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return 'R' + value.toLocaleString();
+                }
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+    }
+
+    // Render cashflow trend chart
+    function renderCashflowChart() {
+      const ctx = document.getElementById('cashflowChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [
+            {
+              label: 'Income',
+              data: [35000, 35500, 35200, 35800, 36000, 35700],
+              borderColor: '#22c55e',
+              backgroundColor: 'rgba(34, 197, 94, 0.1)',
+              tension: 0.4,
+              fill: true
+            },
+            {
+              label: 'Expenses',
+              data: [28000, 29500, 27800, 30200, 28900, 29100],
+              borderColor: '#ef4444',
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              tension: 0.4,
+              fill: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              ticks: {
+                callback: function(value) {
+                  return 'R' + value.toLocaleString();
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Render debt overview chart
+    function renderDebtChart() {
+      const ctx = document.getElementById('debtChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Remaining Debt', 'Paid Off'],
+          datasets: [{
+            data: [45000, 15000],
+            backgroundColor: ['#ef4444', '#22c55e'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                usePointStyle: true
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Chat functionality
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      
+      if (!message) return;
+      
+      addChatMessage('user', message);
+      input.value = '';
+      
+      // Simulate AI response
+      setTimeout(() => {
+        const response = generateAIResponse(message);
+        addChatMessage('bot', response);
+      }, 1000);
+    }
+
+    // Add chat message
+    function addChatMessage(sender, message) {
+      const chatHistory = document.getElementById('chatHistory');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `chat-message ${sender}-message`;
+      messageDiv.textContent = message;
+      chatHistory.appendChild(messageDiv);
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+    // Generate AI response (placeholder)
+    function generateAIResponse(message) {
+      const responses = [
+        "Based on your spending patterns, I recommend focusing on reducing entertainment expenses by 20%.",
+        "Your savings rate is currently at 5.6%. Consider increasing it to 10-20% for better financial health.",
+        "I notice you have R45,000 in debt. Would you like me to suggest a debt repayment strategy?",
+        "Your monthly cash flow is positive, which is great! You have R6,800 left after expenses.",
+        "Consider setting up an emergency fund of R21,000 (3 months of expenses) as your next financial goal."
+      ];
+      
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // Logout function
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        // Clear any stored data
+        localStorage.clear();
+        // Redirect to login (placeholder)
+        alert('Logged out successfully!');
+      }
+    }
+
+    // Allow Enter key in chat
+    document.getElementById('chatInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
