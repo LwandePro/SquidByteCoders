@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goal Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-page">
+  <aside class="sidebar">
+    <h2 class="logo">💰 FinTrack</h2>
+    <nav>
+      <ul>
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="advice.html">Advice Page</a></li>
+        <li><a href="goals.html" class="active">Goal Tracker</a></li>
+        <li><a href="history.html">History</a></li>
+      </ul>
+    </nav>
+    <button class="logout-btn">Logout</button>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <span id="greeting">Hi, John 👋</span>
+    </header>
+
+    <section class="goals">
+      <h1>🎯 Your Financial Goals</h1>
+
+      <div class="card">
+        <h3>Set a New Goal</h3>
+        <form id="goalForm">
+          <label>Goal Name:</label>
+          <input type="text" id="goalName" required>
+          <label>Target Amount (R):</label>
+          <input type="number" id="targetAmount" required>
+          <label>Deadline:</label>
+          <input type="date" id="goalDeadline" required>
+          <button type="submit">Add Goal</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>Your Active Goals</h3>
+        <ul id="goalList"></ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

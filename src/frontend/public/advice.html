@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insights & Advice</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-page">
+  <aside class="sidebar">
+    <h2 class="logo">💰 FinTrack</h2>
+    <nav>
+      <ul>
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="advice.html" class="active">Advice Page</a></li>
+        <li><a href="goals.html">Goal Tracker</a></li>
+        <li><a href="history.html">History</a></li>
+      </ul>
+    </nav>
+    <button class="logout-btn">Logout</button>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <span id="greeting">Hi, John 👋</span>
+    </header>
+
+    <section class="insights">
+      <h1>Personalized Financial Insights</h1>
+      <div class="card highlight">
+        <h3>Problem Areas</h3>
+        <ul id="problemList">
+          <li>Overspending on Wants: 60% (Recommended < 30%).</li>
+          <li>Debt-to-Income Ratio: 40% (Recommended < 30%).</li>
+          <li>Savings Rate: 10% (Recommended ≥ 20%).</li>
+        </ul>
+      </div>
+      <div class="card advice-box">
+        <h3>Advice for You</h3>
+        <p id="adviceText">Try reducing discretionary spending by 15% this month...</p>
+      </div>
+      <div class="card">
+        <h3>Next Month’s Forecast</h3>
+        <canvas id="forecastChart"></canvas>
+      </div>
+      <div class="card chat-sim">
+        <h3>Ask "What If" Questions</h3>
+        <textarea id="whatIfInput" placeholder="e.g., What if I save R500 more each month?"></textarea>
+        <button onclick="askWhatIf()">Ask</button>
+        <div id="whatIfResponse"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

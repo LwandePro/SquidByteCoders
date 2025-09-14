@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-page">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="logo">💰 FinTrack</h2>
+    <nav>
+      <ul>
+        <li><a href="dashboard.html" class="active">Home</a></li>
+        <li><a href="advice.html">Advice Page</a></li>
+        <li><a href="goals.html">Goal Tracker</a></li>
+        <li><a href="history.html">History</a></li>
+      </ul>
+    </nav>
+    <button class="logout-btn">Logout</button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="topbar">
+      <span id="greeting">Hi, John 👋</span>
+    </header>
+
+    <!-- Upload / Hero Section -->
+    <section id="upload-section" class="hero-panel">
+      <h1>Understand your money better in minutes.</h1>
+      <input type="file" id="fileUpload" />
+      <button onclick="uploadFile()">Upload Payslip / Bank Statement</button>
+      <button onclick="useSampleData()">Try with sample data</button>
+    </section>
+
+    <!-- Results Dashboard -->
+    <section id="results-section" class="results hidden">
+      <div class="card">
+        <h3>Salary Breakdown</h3>
+        <canvas id="salaryChart"></canvas>
+      </div>
+      <div class="card">
+        <h3>Expenses: Needs vs Wants vs Savings</h3>
+        <canvas id="expenseChart"></canvas>
+      </div>
+      <div class="card">
+        <h3>Cashflow</h3>
+        <canvas id="cashflowChart"></canvas>
+      </div>
+      <div class="card">
+        <h3>Debt Monitor</h3>
+        <canvas id="debtChart"></canvas>
+      </div>
+      <div class="card">
+        <h3>Savings Goal</h3>
+        <progress id="goalProgress" value="2000" max="10000"></progress>
+        <p>R2,000 saved out of R10,000 target (20%).</p>
+      </div>
+    </section>
+
+  </main>
+   <!-- AI Chatbox -->
+    <section class="chatbox">
+      <textarea id="chatInput" placeholder="Ask me anything about your money..."></textarea>
+      <button onclick="sendMessage()">Send</button>
+      <div id="chatHistory"></div>
+    </section>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
