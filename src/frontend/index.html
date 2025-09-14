@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body>
+
+<div class="dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">FinTracker</div>
+    <ul class="nav-menu">
+      <li class="nav-item"><a href="#" class="nav-link active">Dashboard</a></li>
+      <li class="nav-item"><a href="#" class="nav-link">Gamification</a></li>
+      <li class="nav-item"><a href="#" class="nav-link">History</a></li>
+      <li class="nav-item"><a href="#" class="nav-link">Chatbot</a></li>
+    </ul>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="header">
+      <div class="greeting">Welcome, <span id="userName"></span>!</div>
+    </div>
+
+    <!-- Upload Section -->
+<div class="upload-section">
+  <h1>Upload Your Documents</h1>
+  <p>Choose a file to upload. Your progress will update automatically!</p>
+  <input type="file" id="fileInput" class="file-input">
+  <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose File</button>
+  <button class="sample-btn" onclick="uploadFile()">Upload</button>
+  <p id="uploadStatus" style="margin-top:10px;"></p>
+</div>
+
+
+    <!-- Gamification Section -->
+    <div class="results-grid">
+      <div class="card">
+        <h3>Gamification Progress</h3>
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width:0%;"></div>
+          </div>
+          <div class="progress-text" id="pointsText">Points: 0</div>
+        </div>
+        <p>Badges: <span id="badgesText">None</span></p>
+      </div>
+
+      <!-- Timeline / History -->
+      <div class="card">
+        <h3>Timeline</h3>
+        <ul id="timeline"></ul>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<!-- Chatbox -->
+<div class="chatbox">
+  <div class="chatbox-header">Chat with MoneyBot</div>
+  <div class="chatbox-content" id="chatContent"></div>
+  <textarea id="chatInput" class="chat-input" placeholder="Type your message..."></textarea>
+  <button class="chat-btn" onclick="sendMessage()">Send</button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
